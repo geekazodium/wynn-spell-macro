@@ -1,6 +1,7 @@
 package com.geekazodium.wynnspellmacro;
 
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.screen.ingame.InventoryScreen;
 import net.minecraft.text.Text;
 import org.lwjgl.glfw.GLFW;
 
@@ -10,16 +11,24 @@ public class MacroHandler {
     private final LinkedList<Integer> bufferedEvents = new LinkedList<>();
     private final int inputInterval;
     private int inputTimer = 0;
+    public boolean occupiedByAction = false;
+    public boolean forcedOccupiedByAction = false;
 
     public MacroHandler(int inputInterval){
         this.inputInterval = inputInterval;
     }
 
+    public void setOccupiedByAction(boolean b){
+        occupiedByAction = b;
+    }
     public void bufferEvent(int id){
         bufferedEvents.add(id);
     }
 
     public void tick(MinecraftClient client){
+        if(client.currentScreen instanceof InventoryScreen){
+            bufferedEvents.clear();
+        }
         if(inputTimer>0){
             inputTimer--;
         }else if(bufferedEvents.size()>0){
@@ -30,6 +39,10 @@ public class MacroHandler {
                 ((ClientInputActionAccessor) client)._doItemUse();
             }
             inputTimer = inputInterval;
+        }else{
+            if(!forcedOccupiedByAction){
+                occupiedByAction = false;
+            }
         }
     }
 }
