@@ -2,19 +2,22 @@ package com.geekazodium.wynnspellmacro.mixins;
 
 import com.geekazodium.wynnspellmacro.ClientInputActionAccessor;
 import com.geekazodium.wynnspellmacro.ClientMain;
-import com.geekazodium.wynnspellmacro.MacroHandler;
-import com.geekazodium.wynnspellmacro.MacroInputHandler;
+import net.minecraft.block.Material;
+import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;
+import net.minecraft.util.hit.BlockHitResult;
+import net.minecraft.util.hit.HitResult;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Desc;
-import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+
+import static com.geekazodium.wynnspellmacro.ClientMain.canCastSpell;
 
 @Mixin(MinecraftClient.class)
 public abstract class MinecraftClientMixin implements ClientInputActionAccessor {
@@ -47,11 +50,14 @@ public abstract class MinecraftClientMixin implements ClientInputActionAccessor 
     public void onTriggerUse(MinecraftClient instance){
         ClientPlayerEntity player = instance.player;
         if(player != null) {
-            Item item = player.getInventory().getMainHandStack().getItem();
-            if(item == Items.STONE_SHOVEL ||item == Items.BOW) {
+            if(ClientMain.isHoldingWeapon()) {
+                if(!canCastSpell()){
+                    doItemUse();
+                    return;
+                }
                 ClientMain.handler1.onPress();
             }else{
-                _doItemUse();
+                doItemUse();
             }
         }
     }

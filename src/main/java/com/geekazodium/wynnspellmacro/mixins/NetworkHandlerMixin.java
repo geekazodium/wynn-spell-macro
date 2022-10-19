@@ -19,7 +19,8 @@ public abstract class NetworkHandlerMixin {
             return;
         }
         if(packet instanceof PlayerActionC2SPacket action){
-            if(action.getAction().equals(PlayerActionC2SPacket.Action.SWAP_ITEM_WITH_OFFHAND)){
+            if(action.getAction().equals(PlayerActionC2SPacket.Action.SWAP_ITEM_WITH_OFFHAND)
+            && ClientMain.isHoldingWeapon()){
                 ClientMain.handler2.onPress();
                // System.out.println(ClientMain.handler2.wasPressed);*/
                 ci.cancel();

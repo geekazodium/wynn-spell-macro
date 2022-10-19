@@ -1,7 +1,10 @@
 package com.geekazodium.wynnspellmacro;
 
+import com.geekazodium.wynnspellmacro.mixins.MinecraftClientMixin;
 import net.minecraft.client.option.KeyBinding;
 import org.lwjgl.glfw.GLFW;
+
+import static com.geekazodium.wynnspellmacro.ClientMain.canCastSpell;
 
 public class MacroInputHandler {
     public static final int START_PRESS = 1;
@@ -18,7 +21,7 @@ public class MacroInputHandler {
     int eventType = 0;
 
     private int pressDuration = 0;
-    private static final int holdThreshold = 8;
+    private static final int holdThreshold = 5;
 
     public MacroInputHandler(KeyBinding keybinding, MacroHandler macro){
         this.keyBinding = keybinding;
@@ -78,6 +81,9 @@ public class MacroInputHandler {
     }
 
     public void tick(){
+        if(!canCastSpell()){
+            return;
+        }
         updateIsPressing();
         if(pressing){
             pressDuration++;

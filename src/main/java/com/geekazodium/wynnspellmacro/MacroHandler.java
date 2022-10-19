@@ -26,7 +26,7 @@ public class MacroHandler {
     }
 
     public void tick(MinecraftClient client){
-        if(client.currentScreen instanceof InventoryScreen){
+        if(!ClientMain.canCastSpell()){
             bufferedEvents.clear();
         }
         if(inputTimer>0){
