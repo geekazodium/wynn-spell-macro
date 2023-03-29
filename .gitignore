@@ -1,5 +1,4 @@
 .gradle/**
-.*/vcs**
-.*
+.idea/
 .*/shelf/
 .*/workspace.xml
