@@ -2,3 +2,5 @@
 .idea/
 .*/shelf/
 .*/workspace.xml
+build/**
+run/

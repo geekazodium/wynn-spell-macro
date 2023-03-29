@@ -27,10 +27,10 @@
   ],
 
   "depends": {
-    "fabricloader": ">=0.14.6",
-    "fabric": "0.59.0+1.18.2",
+    "fabricloader": ">=0.14.14",
+    "fabric": "0.76.0+1.19.3",
     "fabric-key-binding-api-v1": "*",
-    "minecraft": "~1.18.2",
+    "minecraft": "~1.19.3",
     "java": ">=17"
   }
 }
